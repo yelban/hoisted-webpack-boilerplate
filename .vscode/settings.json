@@ -1,0 +1,57 @@
+{
+  "liveServer.settings.port": 5501,
+  "editor.formatOnSave": false, // 停用預設的存擋時格式化
+  // "editor.codeActionsOnSave": {
+  //     "source.fixAll.eslint": true
+  // },
+  "[javascript]": {
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": true
+    }
+  },
+  "javascript.validate.enable": false,
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact"
+  ],
+  "[json]": {
+    "editor.formatOnSave": true,
+    // "editor.defaultFormatter": "vscode.json-language-features",
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[jsonc]": {
+    "editor.formatOnSave": true,
+    // "editor.defaultFormatter": "vscode.json-language-features",
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "files.associations": {
+    // ".prettierrc": "jsonc"
+    // .prettierrc 不支援 jsonc
+  },
+  // disable the built-in CSS, Less, and SCSS linters
+  "css.validate": false,
+  "less.validate": false,
+  "scss.validate": false,
+  // Add the language identifiers you want to validate to the extension's workspace
+  "stylelint.validate": ["css", "less", "scss"],
+  "[css]": {
+    "editor.codeActionsOnSave": {
+      "source.fixAll.stylelint": true
+    },
+    "editor.defaultFormatter": "stylelint.vscode-stylelint"
+  },
+  "[less]": {
+    "editor.codeActionsOnSave": {
+      "source.fixAll.stylelint": true
+    },
+    "editor.defaultFormatter": "stylelint.vscode-stylelint"
+  },
+  "[scss]": {
+    "editor.codeActionsOnSave": {
+      "source.fixAll.stylelint": true
+    },
+    "editor.defaultFormatter": "stylelint.vscode-stylelint"
+  }
+}

@@ -1,0 +1,11 @@
+body {
+  font-family: "Helvetica Neue", helvetica, arial, "Lucida Grande", "LiHei Pro", "WenQuanYi Zen Hei", "微軟正黑體", "Microsoft JhengHei", "微软雅黑", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
+  color: #505050;
+  background-color: #F5F5F5;
+}
+
+h1 {
+  text-align: center;
+  box-shadow: 1px 1px 5px 0 rgb(0 0 0 / 75%);
+  transform: rotate(5deg);
+}
