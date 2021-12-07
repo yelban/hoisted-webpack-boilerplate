@@ -53,15 +53,9 @@ module.exports = {
           (env === 'development' ? 'style-loader' : {
             loader: MiniCssExtractPlugin.loader,
             // options: {
-            //   publicPath: '../',
+            //   publicPath: path.resolve(__dirname, './dist/css/'),
             // },
           }),
-          {
-            loader: MiniCssExtractPlugin.loader,
-            options: {
-              publicPath: path.resolve(__dirname, './dist/css/'),
-            },
-          },
           {
             loader: 'css-loader',
             options: {
