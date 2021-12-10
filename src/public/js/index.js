@@ -1,11 +1,8 @@
 import '../css/index.scss';
-
 import iconSVG from '../assets/pic/icons8-share.svg';
-
 console.log('index.js');
 
 window.addEventListener('DOMContentLoaded', () => console.log('ready'));
-
 window.addEventListener('load', (event) => console.log('load'));
 
 const promise1 = new Promise((resolve, reject) => {

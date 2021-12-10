@@ -1,5 +1,8 @@
 module.exports = {
-  extends: ["stylelint-config-standard-scss"],
+  extends: [
+    "stylelint-config-standard-scss",
+    // "stylelint-plugin-stylus/standard",
+  ],
   plugins: ["stylelint-order"],
   rules: {
     "color-hex-case": "upper",

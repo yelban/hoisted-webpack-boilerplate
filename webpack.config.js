@@ -27,6 +27,8 @@ module.exports = {
     clean: true,
   },
 
+  //   devtool: env === 'production' ? 'source-map' : 'eval',
+
   devServer: {
     // hot: true,
     open: true,
@@ -103,7 +105,7 @@ module.exports = {
           {
             loader: 'css-loader',
             options: {
-              importLoaders: 1,
+              importLoaders: 2,
             },
           },
           {
@@ -116,7 +118,77 @@ module.exports = {
           },
           {
             loader: 'sass-loader',
-            options: {},
+            // options: {
+            //   sassOptions: {
+            //     indentWidth: 4,
+            //   }
+            // },
+          },
+        ],
+      },
+      {
+        test: /\.less$/i,
+        use: [
+          (env === 'development' ? 'style-loader' : {
+            loader: MiniCssExtractPlugin.loader,
+            // options: {
+            //   publicPath: '../',
+            // },
+          }),
+          {
+            loader: 'css-loader',
+            options: {
+              importLoaders: 2,
+            },
+          },
+          {
+            loader: 'postcss-loader',
+            options: {
+              postcssOptions: {
+                config: path.resolve(__dirname, 'postcss.config.js'),
+              },
+            },
+          },
+          {
+            loader: 'less-loader',
+            // options: {
+            //   lessOptions: {
+            //     strictMath: true,
+            //   },
+            // },
+          },
+        ],
+      },
+      {
+        test: /\.styl(us)?$/i,
+        use: [
+          (env === 'development' ? 'style-loader' : {
+            loader: MiniCssExtractPlugin.loader,
+            // options: {
+            //   publicPath: '../',
+            // },
+          }),
+          {
+            loader: 'css-loader',
+            options: {
+              importLoaders: 2,
+            },
+          },
+          {
+            loader: 'postcss-loader',
+            options: {
+              postcssOptions: {
+                config: path.resolve(__dirname, 'postcss.config.js'),
+              },
+            },
+          },
+          {
+            loader: 'stylus-loader',
+            // options: {
+            //   stylusOptions: {
+            //     hoistAtrules: true,
+            //   }
+            // },
           },
         ],
       },
@@ -211,7 +283,17 @@ module.exports = {
       // (i.e. `terser-webpack-plugin`), uncomment the next line
       // `...`,
       new CssMinimizerPlugin(),
-      new TerserPlugin(),
+      new TerserPlugin({
+        terserOptions: {
+          compress: {
+            drop_console: true,
+          },
+          format: {
+            comments: false,
+          },
+        },
+        extractComments: false,
+      }),
     ],
   },
 
