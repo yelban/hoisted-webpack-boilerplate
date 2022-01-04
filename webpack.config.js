@@ -4,6 +4,7 @@ const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 // const StylelintPlugin = require('stylelint-webpack-plugin');
 
@@ -18,28 +19,42 @@ module.exports = {
 
   entry: {
     index: path.resolve(__dirname, './src/public/js/index.js'),
+    // ie: path.resolve(__dirname, './src/public/js/ie.js'),
+    // popular: path.resolve(__dirname, './src/public/js/popular.js'),
+    // scroll: path.resolve(__dirname, './src/public/js/scroll.js'),
+    // user: path.resolve(__dirname, './src/public/js/user.js'),
   },
 
   output: {
     path: path.resolve(__dirname, './dist'),
-    filename: '[name].bundle.js',
-    // assetModuleFilename: 'assets/[hash][ext][query]',
+    filename: 'js/[name].js',
+    assetModuleFilename: 'assets/[name]_[hash:6][ext][query]',
     clean: true,
   },
 
-  //   devtool: env === 'production' ? 'source-map' : 'eval',
+  // devtool: env === 'production' ? 'source-map' : 'eval',
 
   devServer: {
     // hot: true,
-    open: true,
+    open: ['/?env=dev'],
     compress: true,
+    // http2: true,
+    // https: {
+    //   cert: '/Users/orz99/zoo/cert/localhost.pem',
+    //   key: '/Users/orz99/zoo/cert/localhost-key.pem',
+    // },
   },
 
   module: {
     rules: [
       {
         test: /\.js$/,
-        exclude: /node_modules/,
+        // exclude: /node_modules/,
+        exclude: [
+          /node_modules\/(?!(dom7|swiper|abscroll4|whatwg-.*)\/).*/,
+          path.resolve(__dirname, './src/utils/'),
+        ],
+        // include: [/whatwg-.*/],
         use: [
           {
             loader: ('babel-loader'),
@@ -49,13 +64,15 @@ module.exports = {
       },
       {
         test: /\.css$/i,
+        // exclude: /\.\/css\/ie\.css$/i,
         use: [
-          (env === 'development' ? 'style-loader' : {
-            loader: MiniCssExtractPlugin.loader,
-            // options: {
-            //   publicPath: path.resolve(__dirname, './dist/css/'),
-            // },
-          }),
+          { loader: MiniCssExtractPlugin.loader },
+          // (env === 'development' ? 'style-loader' : {
+          //   loader: MiniCssExtractPlugin.loader,
+          //   // options: {
+          //   //   publicPath: path.resolve(__dirname, './dist/css/'),
+          //   // },
+          // }),
           {
             loader: 'css-loader',
             options: {
@@ -90,12 +107,13 @@ module.exports = {
       {
         test: /\.(sa|sc)ss$/i,
         use: [
-          (env === 'development' ? 'style-loader' : {
-            loader: MiniCssExtractPlugin.loader,
-            // options: {
-            //   publicPath: '../',
-            // },
-          }),
+          { loader: MiniCssExtractPlugin.loader },
+          // (env === 'development' ? 'style-loader' : {
+          //   loader: MiniCssExtractPlugin.loader,
+          //   // options: {
+          //   //   publicPath: '../',
+          //   // },
+          // }),
           {
             loader: 'css-loader',
             options: {
@@ -114,7 +132,7 @@ module.exports = {
             loader: 'sass-loader',
             // options: {
             //   sassOptions: {
-            //     indentWidth: 4,
+            //     indentWidth: 2,
             //   }
             // },
           },
@@ -207,19 +225,42 @@ module.exports = {
       },
       {
         test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
-        type: 'asset/resource',
+        type: 'asset',
         generator: {
           filename: 'assets/fonts/[name]_[hash:6][ext][query]',
+        },
+        parser: {
+          dataUrlCondition: {
+            maxSize: 1 * 1024, // 1kb
+          },
         },
       },
       {
         test: /\.html$/i,
         loader: 'html-loader',
+        // options: {
+        //   sources: env === 'production' ? {
+        //     urlFilter: (attribute, value, resourcePath) => {
+        //       // The `attribute` argument contains a name of the HTML attribute.
+        //       // The `value` argument contains a value of the HTML attribute.
+        //       // The `resourcePath` argument contains a path to the loaded HTML file.
+
+        //       if (/(popular|ie|index)\.css$/.test(value)) {
+        //         return false;
+        //       }
+
+        //       return true;
+        //     },
+        //   } : {},
+        // },
       },
     ],
+    // prevent issue "Critical dependency: the request of a dependency is an expression"
+    exprContextCritical: false,
   },
 
   plugins: [
+
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify(env),
       'process.env.TARGET': JSON.stringify(target),
@@ -256,6 +297,7 @@ module.exports = {
       filename: './index.html',
       template: './src/public/index.html',
       inject: 'body',
+      // excludeChunks: env === 'production' ? ['ie', 'popular', 'scroll', 'user'] : ['ie', 'user'],
       minify: env === 'production' ? {
         collapseWhitespace: true,
         removeComments: true,
@@ -266,13 +308,21 @@ module.exports = {
       } : false,
     }),
 
+    new CopyPlugin({
+      patterns: [
+        {
+          from: path.resolve(__dirname, 'src/public', 'favicon.ico'),
+          // to: path.resolve(__dirname, 'dist'),
+        },
+      ],
+    }),
   ],
 
   optimization: {
     // Webpack enable CSS optimization only in production mode
     // If you want to run it also in development set the optimization.minimize option to true
     // minimize: true,
-    minimizer: [
+    minimizer: (env === 'production') ? [
       // For webpack@5 you can use the `...` syntax to extend existing minimizers
       // (i.e. `terser-webpack-plugin`), uncomment the next line
       // `...`,
@@ -288,7 +338,8 @@ module.exports = {
         },
         extractComments: false,
       }),
-    ],
+    ] : [],
+    runtimeChunk: (env === 'production') ? false : 'single',
   },
 
 };

@@ -53,5 +53,7 @@
       "source.fixAll.stylelint": true
     },
     "editor.defaultFormatter": "stylelint.vscode-stylelint"
-  }
+  },
+  "editor.bracketPairColorization.enabled": true,
+  "auto-rename-tag.activationOnLanguage": ["html", "xml", "php", "javascript"]
 }

@@ -3,7 +3,7 @@ module.exports = {
     "stylelint-config-standard-scss",
     // "stylelint-plugin-stylus/standard",
   ],
-  plugins: ["stylelint-order"],
+  plugins: ["stylelint-order", "stylelint-no-unsupported-browser-features"],
   rules: {
     "color-hex-case": "upper",
     "declaration-block-trailing-semicolon": "always",
@@ -18,6 +18,7 @@ module.exports = {
       },
     ],
     "scss/at-rule-no-unknown": null,
+    "plugin/no-unsupported-browser-features": true,
     "order/order": [
       "dollar-variables",
       "custom-properties",
@@ -291,4 +292,5 @@ module.exports = {
       },
     ],
   },
+  "defaultSeverity": "warning",
 };

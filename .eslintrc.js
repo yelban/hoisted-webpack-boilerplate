@@ -27,10 +27,11 @@ module.exports = {
     'no-undef': 'warn',
     'no-unused-vars': 'warn',
     'vars-on-top': 'off',
-    'max-len': ['warn', { code: 100 }],
+    'max-len': ['warn', { code: 120 }],
     'linebreak-style': ['error', (process.platform === 'win32' ? 'windows' : 'unix')],
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'import/prefer-default-export': 'off',
+    'import/no-unresolved': ['error', { ignore: ['abscroll'] }],
     // suppress errors for missing 'import React' in files
     // 'react/react-in-jsx-scope': 'off',
     // allow jsx syntax in js files (for next.js project)
