@@ -55,5 +55,7 @@
     "editor.defaultFormatter": "stylelint.vscode-stylelint"
   },
   "editor.bracketPairColorization.enabled": true,
-  "auto-rename-tag.activationOnLanguage": ["html", "xml", "php", "javascript"]
+  "auto-rename-tag.activationOnLanguage": ["html", "xml", "php", "javascript"],
+  "terminal.integrated.fontFamily": "'SourceCodePro+Powerline+Awesome Regular'",
+  "terminal.integrated.lineHeight": 1.1
 }

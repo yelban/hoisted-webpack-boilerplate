@@ -28,16 +28,33 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, './dist'),
     filename: 'js/[name].js',
-    assetModuleFilename: 'assets/[name]_[hash:6][ext][query]',
-    clean: true,
+    // assetModuleFilename: 'assets/[name]_[hash:6][ext][query]',
+    clean: {
+      keep(asset) {
+        return asset.includes('assets');
+      },
+    },
   },
 
   // devtool: env === 'production' ? 'source-map' : 'eval',
 
   devServer: {
     // hot: true,
-    open: ['/?env=dev'],
+    // open: ['/?env=dev'],
+    static: {
+      directory: path.join(__dirname, 'public'),
+    },
     compress: true,
+    // require by nginx proxy redirect
+    client: {
+      webSocketURL: 'auto://0.0.0.0:0/ws'
+    },
+    port: 5051,
+    // prevent 'Invalid Host header' error when devServer is behind a proxy
+    allowedHosts: [
+      '.dado.tw'
+    ],
+    // historyApiFallback: true,
     // http2: true,
     // https: {
     //   cert: '/Users/orz99/zoo/cert/localhost.pem',
